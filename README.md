@@ -1,6 +1,6 @@
-# Cartão de Identidade Acadêmica digital
+# Catalogo de filmes assistidos
 
-O projeto visa criar um cartão de identidade acadêmica digital com 3 informações centrais, nome, curso e bio, utilizando do Django.
+O projeto visa criar um um catalogo de filmes dando liberdade para o usuário poder cadastrar e constatar outras informações sobre os filmes que assistiu ou pretende assistir.
 
 # Tecnologias utilizadas
 
