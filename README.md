@@ -6,7 +6,7 @@ Carlos Eduardo e Dâmalla
 
 ## Sobre o projeto
 
-Aplicação web para cadastrar, consultar, editar e excluir filmes. O catálogo permite registrar filmes já assistidos e filmes que ainda estão na lista do usuário.
+Aplicação web para cadastrar, consultar, editar e excluir filmes. O catálogo permite registrar filmes já assistidos e filmes que ainda estão na lista do usuário para assistir no futuro.
 
 ## Campos do model `Filme`
 
@@ -25,7 +25,7 @@ Aplicação web para cadastrar, consultar, editar e excluir filmes. O catálogo 
 - Django 5.2.17
 - SQLite
 - HTML5
-- CSS3 próprio, com tema dark e paleta cinematográfica em vermelho
+- CSS3
 - Templates do Django
 
 As dependências Python utilizadas estão registradas em `requirements.txt`.
