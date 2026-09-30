@@ -38,23 +38,25 @@
                     </div>
 
                     <div class="mb-3">
-                                <label class="form-label fw-semibold">País de Origem</label>
-                                <input type="text" name="pais_origem" class="form-control"
-                               value="{{ filme.pais_origem|default:'' }}"
-                               placeholder="País de origem do filme" required>
+                        <label class="form-label fw-semibold">País de Origem</label>
+                        <select name="pais_origem" class="form-select" required>
+                            {% for codigo, pais in paises %}
+                            <option value="{{ codigo }}" {% if filme.dados_pais.pais_origem == codigo %}selected{% endif %}>{{ pais }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Diretor</label>
                         <input type="text" name="diretor" class="form-control"
-                               value="{{ filme.diretor|default:'' }}"
+                               value="{{ filme.dados_diretor.diretor|default:'' }}"
                                placeholder="Nome do diretor" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Gênero</label>
                         <input type="text" name="genero" class="form-control"
-                               value="{{ filme.genero|default:'' }}"
+                               value="{{ filme.dados_genero.genero|default:'' }}"
                                placeholder="Ex.: drama, comédia" required>
                     </div>
 

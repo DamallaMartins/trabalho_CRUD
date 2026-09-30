@@ -121,7 +121,8 @@ form { display: grid; gap: .15rem; }
     letter-spacing: .02em;
 }
 
-.form-control {
+.form-control,
+.form-select {
     display: block;
     width: 100%;
     min-height: 48px;
@@ -132,12 +133,13 @@ form { display: grid; gap: .15rem; }
     border-radius: 6px;
     outline: none;
     font: inherit;
+    color-scheme: dark;
     transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
 textarea.form-control { min-height: 120px; resize: vertical; }
-.form-control:hover { background: #120708; border-color: rgba(255, 100, 112, .55); }
-.form-control:focus { background: #120708; border-color: var(--red); box-shadow: 0 0 0 4px rgba(255, 57, 72, .13); }
+.form-control:hover, .form-select:hover { background: #120708; border-color: rgba(255, 100, 112, .55); }
+.form-control:focus, .form-select:focus { background: #120708; border-color: var(--red); box-shadow: 0 0 0 4px rgba(255, 57, 72, .13); }
 .form-control::placeholder { color: #806c70; }
 
 .form-check { display: flex; align-items: center; gap: .65rem; padding: .75rem 0; }

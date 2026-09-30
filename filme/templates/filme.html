@@ -45,9 +45,9 @@
                         {% for filme in filmes %}
                         <tr>
                             <td class="fw-semibold">{{ filme.nome }}</td>
-                            <td><span class="badge bg-secondary">{{ filmepais.pais_origem.name }}</span></td>
-                            <td>{{ filme.diretor }}</td>
-                            <td>{{ filme.genero }}</td>
+                            <td><span class="badge bg-secondary">{{ filme.dados_pais.pais_origem.name|default:"—" }}</span></td>
+                            <td>{{ filme.dados_diretor.diretor|default:"—" }}</td>
+                            <td>{{ filme.dados_genero.genero|default:"—" }}</td>
                             <td class="text-muted">{{ filme.review|default:"—" }}</td>
                             <td>{{ filme.nota|default:"—" }}</td>
                             <td>{{ filme.data_assistido|date:"d/m/Y"|default:"—" }}</td>

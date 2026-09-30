@@ -23,7 +23,7 @@
             <div class="card-body">
                 <p class="mb-1">Você tem certeza que deseja excluir o filme:</p>
                 <p class="fw-bold fs-5 text-dark">{{ filme.nome }}</p>
-                <p class="text-muted small mb-2">Diretor: {{ filme.diretor }}</p>
+                <p class="text-muted small mb-2">Diretor: {{ filme.dados_diretor.diretor|default:"—" }}</p>
                 <p class="text-danger small mb-3">Esta ação não pode ser desfeita!</p>
 
                 <form method="post">

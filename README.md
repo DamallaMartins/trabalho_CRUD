@@ -8,16 +8,15 @@ Carlos Eduardo e Dâmalla
 
 Aplicação web para cadastrar, consultar, editar e excluir filmes. O catálogo permite registrar filmes já assistidos e filmes que ainda estão na lista do usuário para assistir no futuro.
 
-## Campos do model `Filme`
+## Models
 
-- `nome`: nome do filme, campo de texto com até 100 caracteres.
-- `pais_origem`: país de origem do filme, campo de texto com até 100 caracteres.
-- `diretor`: nome do diretor, campo de texto com até 100 caracteres.
-- `genero`: gênero do filme, campo de texto com até 100 caracteres.
-- `review`: breve review do filme, campo de texto longo opcional.
-- `nota`: nota numérica opcional de 1 a 5.
-- `data_assistido`: data em que o filme foi assistido, opcional.
-- `assistido`: indica se o filme já foi assistido, com valor padrão `False`.
+O model `Filme` guarda `nome`, `review` (opcional), `nota` (opcional, de 1 a 5), `data_assistido` (opcional) e `assistido` (padrão `False`).
+
+Os dados complementares ficam em models próprios, cada um relacionado a `Filme`:
+
+- `FilmePais`: país de origem.
+- `FilmeDiretor`: nome do diretor.
+- `FilmeGenero`: gênero do filme.
 
 ## Tecnologias utilizadas
 
