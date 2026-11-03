@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'filme/css/style.css' %}">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">Área do Filme</span>
+        </div>
+    </nav>
+
+    <main class="container pb-5" style="max-width: 480px;">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h1 class="h5 mb-0">Entrar</h1>
+            </div>
+
+            <div class="card-body">
+                {% if form.errors %}
+                <div class="alert-warning mb-3">Usuário ou senha inválidos.</div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label fw-semibold">Usuário</label>
+                        <input type="text" name="username" id="id_username" class="form-control"
+                               placeholder="Digite seu usuário" required autofocus>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label fw-semibold">Senha</label>
+                        <input type="password" name="password" id="id_password" class="form-control"
+                               placeholder="Digite sua senha" required>
+                    </div>
+
+                    {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}">
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

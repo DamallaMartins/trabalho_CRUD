@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'filme',
     'diretor',
+    'contas',
     'django_countries',
 
 ]
@@ -124,3 +125,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'contas:login'
+LOGOUT_REDIRECT_URL = 'contas:login'
+LOGIN_REDIRECT_URL = 'filme'

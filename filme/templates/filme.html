@@ -5,13 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Área do Filme</title>
-    <link rel="stylesheet" href="{% static 'filme/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'filme/css/style.css' %}?v=2">
 </head>
 <body class="bg-light">
 
     <nav class="navbar navbar-dark bg-dark mb-4">
         <div class="container">
             <span class="navbar-brand mb-0 h1">Área do Filme</span>
+            <form method="post" action="{% url 'contas:logout' %}" style="margin-left: auto;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Sair</button>
+            </form>
         </div>
     </nav>
 
@@ -21,7 +25,10 @@
             <h1 class="h3 mb-0">Filmes cadastrados
                 <span class="badge bg-primary rounded-pill fs-6 ms-2">{{ filmes|length }}</span>
             </h1>
-            <a href="{% url 'criar_filme' %}" class="btn btn-primary">Novo Filme</a>
+            <div class="d-flex align-items-center" style="gap: .35rem;">
+                <a href="{% url 'criar_filme' %}" class="btn btn-primary">Novo Filme</a>
+                <a href="{% url 'diretor' %}" class="btn btn-diretores">Ver diretores</a>
+            </div>
         </div>
 
         {% if filmes %}

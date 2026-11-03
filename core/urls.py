@@ -23,6 +23,7 @@ urlpatterns = [
         path('', default_urlconf,
     name='home'),
         path('admin/', admin.site.urls),
+        path('contas/', include('contas.urls'), name='contas'),
         path('filme/', include("filme.urls")),
         path('diretor/', include("diretor.urls")),
     

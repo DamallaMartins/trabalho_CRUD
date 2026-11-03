@@ -177,7 +177,22 @@ textarea.form-control { min-height: 120px; resize: vertical; }
 .btn-primary:hover, .btn-danger:hover, .btn-primary:focus, .btn-danger:focus { background: var(--red) !important; color: #21090c !important; }
 .btn-warning { color: #fff !important; background: #222325 !important; }
 .btn-warning:hover, .btn-warning:focus { background: #424548 !important; color: #111 !important; }
-.btn-secondary { background: var(--raised) !important; }
+.btn-secondary { background: #6f252c !important; }
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background: #8a3038 !important;
+    color: #fff !important;
+}
+
+.btn-diretores {
+    background: #571217 !important;
+}
+
+.btn-diretores:hover,
+.btn-diretores:focus {
+    background: #a13a44 !important;
+    color: #fff !important;
+}
 
 .table-responsive { overflow-x: auto; }
 .table { width: 100%; min-width: 940px; border-collapse: collapse; color: var(--text); }
