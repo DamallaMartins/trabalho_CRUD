@@ -8,6 +8,42 @@ Carlos Eduardo e Dâmalla
 
 Aplicação web para cadastrar, consultar, editar e excluir filmes. O catálogo permite registrar filmes já assistidos e filmes que ainda estão na lista do usuário para assistir no futuro.
 
+## Progresso do trabalho
+
+- Configuração inicial da aplicação Django e preparação do projeto.
+- Implementação do CRUD de filmes.
+- Criação dos models para país, diretor e gênero.
+- Integração com `django-countries` para seleção de países.
+- Adição da página de login e da seção de diretores.
+- Implementação das barras de pesquisa para filmes e diretores.
+- Criação de pop-ups para visualizar os filmes de um diretor e os detalhes completos de um filme.
+- Atualização da tabela de filmes para mostrar somente nome, país de origem, diretor e gênero.
+- Atualização do layout, das cores, dos espaçamentos e da responsividade do site.
+- Atualização contínua da documentação e das informações do projeto.
+
+## Funcionalidades
+
+- Cadastro, edição e exclusão de filmes.
+- Cadastro de país de origem, diretor, gênero e review.
+- Pesquisa de filmes pelo nome.
+- Pesquisa de diretores pelo nome.
+- Visualização dos filmes realizados por um diretor em uma janela pop-up.
+- Visualização dos detalhes adicionais de um filme ao clicar em seu nome.
+- Exibição da lista de filmes com nome, país de origem, diretor e gênero.
+- Exibição de review, nota, data assistida e situação de visualização somente dentro do pop-up do filme.
+
+### Pesquisa
+
+Na página de filmes, digite parte do nome e clique em **Pesquisar**. A barra filtra somente pelo campo `nome`; campos como diretor, gênero ou review não participam dessa pesquisa. Clique em **Limpar** para voltar à lista completa.
+
+Na página de diretores, digite parte do nome do diretor e clique em **Pesquisar**. Clique em **Limpar** para remover o filtro.
+
+### Pop-ups de detalhes
+
+- Em **Diretores**, clique em **Ver filmes** para abrir uma janela contendo os filmes do diretor e seus gêneros.
+- Em **Filmes**, clique no nome de um filme para abrir uma janela contendo review, nota, data assistida e se o filme foi assistido.
+- Use o botão **Fechar**, no final da janela, para fechá-la.
+
 ## Models
 
 O model `Filme` guarda `nome`, `review` (opcional), `nota` (opcional, de 1 a 5), `data_assistido` (opcional) e `assistido` (padrão `False`).
