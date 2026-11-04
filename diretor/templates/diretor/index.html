@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diretores</title>
-    <link rel="stylesheet" href="{% static 'filme/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'filme/css/style.css' %}?v=5">
 </head>
 <body>
     <main class="container py-4">
@@ -13,6 +13,22 @@
             <h1 class="h3 mb-0">Diretores</h1>
             <a href="{% url 'filme' %}" class="btn btn-primary">Ver filmes</a>
         </div>
+
+        <form method="get" class="search-form mb-3">
+            <div class="input-group">
+                <input
+                    type="search"
+                    name="busca"
+                    class="form-control"
+                    placeholder="Pesquisar diretor..."
+                    value="{{ request.GET.busca }}"
+                >
+                <button type="submit" class="btn btn-primary">Pesquisar</button>
+                {% if request.GET.busca %}
+                <a href="{% url 'diretor' %}" class="btn btn-secondary">Limpar</a>
+                {% endif %}
+            </div>
+        </form>
 
         {% if diretores %}
         <div class="card shadow-sm">
@@ -22,6 +38,7 @@
                         <tr>
                             <th>Diretor</th>
                             <th>Filmes cadastrados</th>
+                            <th class="text-center">Ação</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,14 +46,60 @@
                         <tr>
                             <td class="fw-semibold">{{ diretor.diretor }}</td>
                             <td>{{ diretor.filmes_count }}</td>
+                            <td class="text-center">
+                                <button
+                                    type="button"
+                                    class="btn btn-primary btn-sm"
+                                    onclick="document.getElementById('filmes-diretor-{{ forloop.counter }}').showModal()"
+                                >
+                                    Ver filmes
+                                </button>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
+
+        {% for diretor in diretores %}
+        <dialog id="filmes-diretor-{{ forloop.counter }}" class="director-dialog">
+            <div class="director-dialog-header">
+                <h2 class="h5 mb-0">Filmes de {{ diretor.diretor }}</h2>
+            </div>
+
+            <div class="director-dialog-content">
+                {% if diretor.filmes %}
+                <ul class="director-film-list">
+                    {% for filme in diretor.filmes %}
+                    <li>
+                        <strong>{{ filme.nome }}</strong>
+                        <span>{{ filme.genero|default:"Gênero não informado" }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="mb-0">Nenhum filme encontrado para este diretor.</p>
+                {% endif %}
+            </div>
+
+            <div class="director-dialog-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="document.getElementById('filmes-diretor-{{ forloop.counter }}').close()"
+                >
+                    Fechar
+                </button>
+            </div>
+        </dialog>
+        {% endfor %}
         {% else %}
-        <div class="alert alert-info">Nenhum diretor cadastrado.</div>
+            {% if request.GET.busca %}
+            <div class="alert alert-info">Nenhum diretor encontrado para "{{ request.GET.busca }}".</div>
+            {% else %}
+            <div class="alert alert-info">Nenhum diretor cadastrado.</div>
+            {% endif %}
         {% endif %}
     </main>
 </body>

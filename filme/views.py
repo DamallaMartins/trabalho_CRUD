@@ -1,8 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Filme, FilmePais, FilmeDiretor, FilmeGenero
 
+
 def filme(request):
     filmes = Filme.objects.all()
+    busca = request.GET.get('busca', '').strip()
+
+    if busca:
+        filmes = filmes.filter(nome__icontains=busca)
+
     return render(request, 'filme.html', {'filmes': filmes})
 
 # Create your views here.

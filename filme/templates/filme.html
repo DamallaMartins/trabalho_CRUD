@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Área do Filme</title>
-    <link rel="stylesheet" href="{% static 'filme/css/style.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'filme/css/style.css' %}?v=7">
 </head>
 <body class="bg-light">
 
@@ -31,6 +31,26 @@
             </div>
         </div>
 
+        <form method="get" class="search-form mb-3">
+            <div class="input-group">
+                <input
+                    type="search"
+                    name="busca"
+                    class="form-control"
+                    placeholder="Pesquisar filme..."
+                    value="{{ request.GET.busca }}"
+                >
+                <button type="submit" class="btn btn-primary">
+                    Pesquisar
+                </button>
+                {% if request.GET.busca %}
+                <a href="{% url 'filme' %}" class="btn btn-secondary">
+                    Limpar
+                </a>
+                {% endif %}
+            </div>
+        </form>
+
         {% if filmes %}
         <div class="card shadow-sm">
             <div class="table-responsive">
@@ -41,24 +61,24 @@
                             <th>País de Origem</th>
                             <th>Diretor</th>
                             <th>Gênero</th>
-                            <th>Review</th>
-                            <th>Nota</th>
-                            <th>Assistido em</th>
-                            <th>Assistido</th>
                             <th class="text-center">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for filme in filmes %}
                         <tr>
-                            <td class="fw-semibold">{{ filme.nome }}</td>
+                            <td class="movie-name-column" style="text-align: left;">
+                                <button
+                                    type="button"
+                                    class="movie-name-button"
+                                    onclick="document.getElementById('detalhes-filme-{{ filme.pk }}').showModal()"
+                                >
+                                    {{ filme.nome }}
+                                </button>
+                            </td>
                             <td><span class="badge bg-secondary">{{ filme.dados_pais.pais_origem.name|default:"—" }}</span></td>
                             <td>{{ filme.dados_diretor.diretor|default:"—" }}</td>
-                            <td>{{ filme.dados_genero.genero|default:"—" }}</td>
-                            <td class="text-muted">{{ filme.review|default:"—" }}</td>
-                            <td>{{ filme.nota|default:"—" }}</td>
-                            <td>{{ filme.data_assistido|date:"d/m/Y"|default:"—" }}</td>
-                            <td>{% if filme.assistido %}Sim{% else %}Não{% endif %}</td>
+                            <td><span class="badge bg-secondary">{{ filme.dados_genero.genero|default:"—" }}</span></td>
                             <td class="text-center">
                                 <a href="{% url 'editar_filme' filme.pk %}" class="btn btn-sm btn-warning me-1">Editar</a>
                                 <a href="{% url 'excluir_filme' filme.pk %}" class="btn btn-sm btn-danger">Excluir</a>
@@ -69,11 +89,56 @@
                 </table>
             </div>
         </div>
+
+        {% for filme in filmes %}
+        <dialog id="detalhes-filme-{{ filme.pk }}" class="director-dialog movie-dialog">
+            <div class="director-dialog-header">
+                <h2 class="h5 mb-0">{{ filme.nome }}</h2>
+            </div>
+
+            <div class="director-dialog-content">
+                <dl class="movie-details">
+                    <div>
+                        <dt>Review</dt>
+                        <dd>{{ filme.review|default:"Não informada" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Nota</dt>
+                        <dd>{{ filme.nota|default:"Não informada" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Assistido em</dt>
+                        <dd>{{ filme.data_assistido|date:"d/m/Y"|default:"Não informado" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Assistido</dt>
+                        <dd>{% if filme.assistido %}Sim{% else %}Não{% endif %}</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="director-dialog-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="document.getElementById('detalhes-filme-{{ filme.pk }}').close()"
+                >
+                    Fechar
+                </button>
+            </div>
+        </dialog>
+        {% endfor %}
         {% else %}
-        <div class="alert alert-warning" role="alert">
-            Nenhum filme cadastrado ainda.
-            <a href="{% url 'criar_filme' %}" class="alert-link">Cadastre o primeiro!</a>
-        </div>
+            {% if request.GET.busca %}
+            <div class="alert alert-warning" role="alert">
+                Nenhum filme encontrado para "{{ request.GET.busca }}".
+            </div>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+                Nenhum filme cadastrado ainda.
+                <a href="{% url 'criar_filme' %}" class="alert-link">Cadastre o primeiro!</a>
+            </div>
+            {% endif %}
         {% endif %}
 
     </main>
