@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Filme, FilmePais, FilmeDiretor, FilmeGenero
 
-
+@login_required
 def filme(request):
     filmes = Filme.objects.all()
     busca = request.GET.get('busca', '').strip()
@@ -11,7 +12,7 @@ def filme(request):
 
     return render(request, 'filme.html', {'filmes': filmes})
 
-# Create your views here.
+@login_required
 def criar_filme(request):
     if request.method == 'POST':
         nome = request.POST['nome']
@@ -44,6 +45,7 @@ def criar_filme(request):
     paises = FilmePais._meta.get_field('pais_origem').choices
     return render(request, 'aluno/form_filme.html', {'titulo': 'Novo Filme', 'paises': paises})
 
+@login_required
 def editar_filme(request, pk):
     filme = get_object_or_404(Filme, pk=pk)
     if request.method == 'POST':
@@ -74,6 +76,7 @@ def editar_filme(request, pk):
         'paises': paises,
     })
 
+@login_required
 def excluir_filme(request, pk):
     filme = get_object_or_404(Filme, pk=pk)
     if request.method == 'POST':
