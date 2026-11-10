@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Área do Filme</title>
-    <link rel="stylesheet" href="{% static 'filme/css/style.css' %}?v=7">
+    <link rel="stylesheet" href="{% static 'filme/css/style.css' %}?v=12">
 </head>
 <body class="bg-light">
 
@@ -25,9 +25,12 @@
             <h1 class="h3 mb-0">Filmes cadastrados
                 <span class="badge bg-primary rounded-pill fs-6 ms-2">{{ filmes|length }}</span>
             </h1>
-            <div class="d-flex align-items-center" style="gap: .35rem;">
+            <div class="movie-actions">
                 <a href="{% url 'criar_filme' %}" class="btn btn-primary">Novo Filme</a>
                 <a href="{% url 'diretor' %}" class="btn btn-diretores">Ver diretores</a>
+                <button type="button" class="btn btn-diretores" id="abrir-estatisticas">
+                    Estatísticas
+                </button>
             </div>
         </div>
 
@@ -141,6 +144,160 @@
             {% endif %}
         {% endif %}
 
+        <dialog id="modal-estatisticas" class="director-dialog modal-estatisticas">
+            <div class="director-dialog-header">
+                <h2 class="h5 mb-0">Estatísticas dos filmes</h2>
+            </div>
+
+            <div class="director-dialog-content">
+                <div class="destaques-estatisticas">
+                    <dl class="movie-details diretor-destaque">
+                        {% if diretor_top %}
+                            <div>
+                                <dt>Diretor mais registrado</dt>
+                                <dd>
+                                    <strong>{{ diretor_top.diretor }}</strong>
+                                    <span class="contagem-filmes">
+                                        {{ diretor_top.total }}
+                                        {% if diretor_top.total == 1 %}filme{% else %}filmes{% endif %}
+                                    </span>
+                                </dd>
+                            </div>
+                        {% else %}
+                            <div>
+                                <dt>Diretor mais registrado</dt>
+                                <dd>Ainda não há diretores cadastrados.</dd>
+                            </div>
+                        {% endif %}
+                    </dl>
+
+                    <dl class="movie-details diretor-destaque">
+                        {% if pais_top %}
+                            <div>
+                                <dt>País mais registrado</dt>
+                                <dd>
+                                    <strong>{{ pais_top.pais }}</strong>
+                                    <span class="contagem-filmes">
+                                        {{ pais_top.total }}
+                                        {% if pais_top.total == 1 %}filme{% else %}filmes{% endif %}
+                                    </span>
+                                </dd>
+                            </div>
+                        {% else %}
+                            <div>
+                                <dt>País mais registrado</dt>
+                                <dd>Ainda não há países cadastrados.</dd>
+                            </div>
+                        {% endif %}
+                    </dl>
+                </div>
+
+                <div class="graficos-estatisticas">
+                    <section>
+                        <h3>Nota média dos filmes</h3>
+                        <div class="area-grafico area-grafico-media">
+                            <canvas id="grafico-media"></canvas>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>Filmes vistos e não vistos</h3>
+                        <div class="area-grafico area-grafico-pizza">
+                            <canvas id="grafico-vistos"></canvas>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="director-dialog-footer">
+                <button type="button" id="fechar-estatisticas" class="btn btn-secondary">
+                    Fechar
+                </button>
+            </div>
+        </dialog>
+
+        {{ vistos|json_script:"dados-vistos" }}
+        {{ nao_vistos|json_script:"dados-nao-vistos" }}
+        {{ media_notas|json_script:"dados-media-notas" }}
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const modal = document.getElementById('modal-estatisticas');
+            let graficosCriados = false;
+
+            document.getElementById('abrir-estatisticas').addEventListener('click', () => {
+                modal.showModal();
+
+                if (graficosCriados) return;
+
+                const vistos = JSON.parse(document.getElementById('dados-vistos').textContent);
+                const naoVistos = JSON.parse(document.getElementById('dados-nao-vistos').textContent);
+                const mediaNotas = JSON.parse(document.getElementById('dados-media-notas').textContent);
+
+                new Chart(document.getElementById('grafico-media'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Nota média'],
+                        datasets: [{
+                            label: 'Nota (de 5)',
+                            data: [mediaNotas],
+                            backgroundColor: '#B50918',
+                            borderColor: '#ff3948',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 5,
+                                ticks: { stepSize: 1, color: '#fff7f7' },
+                                grid: { color: 'rgba(255, 255, 255, .12)' }
+                            },
+                            y: {
+                                ticks: { color: '#fff7f7' },
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { labels: { color: '#fff7f7' } },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `Média: ${context.parsed.x.toFixed(1)} / 5`
+                                }
+                            }
+                        }
+                    }
+                });
+
+                new Chart(document.getElementById('grafico-vistos'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['Vistos', 'Não vistos'],
+                        datasets: [{
+                            data: [vistos, naoVistos],
+                            backgroundColor: ['#B50918', '#424548'],
+                            borderWidth: 0,
+                            hoverBorderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { labels: { color: '#fff7f7' } } }
+                    }
+                });
+
+                graficosCriados = true;
+            });
+
+            document.getElementById('fechar-estatisticas').addEventListener('click', () => {
+                modal.close();
+            });
+        </script>
     </main>
 
 </body>

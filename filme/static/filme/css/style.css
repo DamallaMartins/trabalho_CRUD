@@ -325,6 +325,37 @@ textarea.form-control { min-height: 120px; resize: vertical; }
     color: var(--text);
 }
 
+.destaques-estatisticas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+.diretor-destaque {
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+.diretor-destaque dd {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+}
+
+.contagem-filmes {
+    display: inline-flex;
+    padding: .3rem .65rem;
+    color: #ffd9de;
+    background: rgba(181, 9, 24, .45);
+    border: 1px solid rgba(255, 100, 112, .35);
+    border-radius: 5px;
+    font-size: .78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
 .btn-diretores {
     background: #571217 !important;
 }
@@ -333,6 +364,12 @@ textarea.form-control { min-height: 120px; resize: vertical; }
 .btn-diretores:focus {
     background: #a13a44 !important;
     color: #fff !important;
+}
+
+.movie-actions {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
 }
 
 .table-responsive { overflow-x: auto; }
@@ -352,12 +389,52 @@ textarea.form-control { min-height: 120px; resize: vertical; }
 .alert-link { color: var(--red); font-weight: 700; }
 .border-danger { border-color: rgba(255, 100, 112, .5) !important; }
 
+.director-dialog.modal-estatisticas {
+    width: min(96vw, 1100px);
+    max-height: 92vh;
+    overflow: hidden;
+    padding: 0;
+}
+
+.modal-estatisticas .director-dialog-content {
+    max-height: none;
+    overflow: visible;
+    padding: .8rem 1.25rem;
+}
+
+.graficos-estatisticas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.area-grafico {
+    height: 220px;
+}
+
+.area-grafico-media {
+    height: 150px;
+}
+
+.graficos-estatisticas h3 {
+    color: var(--red);
+    font-size: 1rem;
+    text-align: center;
+}
+
 @media (max-width: 700px) {
     .container { width: min(100% - 1.5rem, 1180px); }
     .navbar .container { min-height: 68px; }
     main.container { padding-top: 2rem; }
     .d-flex.justify-content-between { align-items: stretch; flex-direction: column; gap: 1rem; }
     .d-flex.justify-content-between .btn { width: 100%; }
+    .movie-actions { display: grid; width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .director-dialog.modal-estatisticas { max-height: 92vh; overflow-y: auto; }
+    .modal-estatisticas .director-dialog-content { overflow: visible; }
+    .destaques-estatisticas { grid-template-columns: 1fr; }
+    .graficos-estatisticas { grid-template-columns: 1fr; }
+    .area-grafico { height: 190px; }
+    .area-grafico-media { height: 130px; }
     .search-form .input-group {
         flex-wrap: wrap;
     }

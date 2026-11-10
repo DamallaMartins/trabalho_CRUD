@@ -1,16 +1,58 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg, Count
 from .models import Filme, FilmePais, FilmeDiretor, FilmeGenero
 
 @login_required
 def filme(request):
-    filmes = Filme.objects.all()
+    todos_filmes = Filme.objects.all()
+    filmes = todos_filmes
     busca = request.GET.get('busca', '').strip()
 
     if busca:
         filmes = filmes.filter(nome__icontains=busca)
 
-    return render(request, 'filme.html', {'filmes': filmes})
+    media = todos_filmes.aggregate(media=Avg('nota'))['media'] or 0
+    vistos = todos_filmes.filter(assistido=True).count()
+    nao_vistos = todos_filmes.filter(assistido=False).count()
+
+    diretores = list(
+        FilmeDiretor.objects
+        .exclude(diretor='')
+        .values('diretor')
+        .annotate(total=Count('filme'))
+        .order_by('-total')
+    )
+    diretor_top = diretores[0] if diretores else None
+
+    paises = list(
+        FilmePais.objects
+        .exclude(pais_origem='')
+        .values('pais_origem')
+        .annotate(total=Count('filme'))
+        .order_by('-total', 'pais_origem')
+    )
+    pais_top = None
+    if paises:
+        pais = paises[0]
+        nomes_paises = dict(FilmePais._meta.get_field('pais_origem').choices)
+        pais_top = {
+            'pais': nomes_paises.get(pais['pais_origem'], pais['pais_origem']),
+            'total': pais['total'],
+        }
+
+    contexto = {
+        'filmes': filmes,
+        'media_notas': media,
+        'vistos': vistos,
+        'nao_vistos': nao_vistos,
+        'diretor_top': diretor_top,
+        'pais_top': pais_top,
+        'diretores_labels': [item['diretor'] for item in diretores],
+        'diretores_dados': [item['total'] for item in diretores],
+    }
+
+    return render(request, 'filme.html', contexto)
 
 @login_required
 def criar_filme(request):
